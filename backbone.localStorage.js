@@ -55,10 +55,12 @@ function result(object, property) {
 // Our Store is represented by a single JS object in *localStorage*. Create it
 // with a meaningful name, like the name you'd give a table.
 // window.Store is deprectated, use Backbone.LocalStorage instead
-Backbone.LocalStorage = window.Store = function(name, serializer) {
+Backbone.LocalStorage = window.Store = function(name, serializer,collectionBound) {
   if( !this.localStorage ) {
     throw "Backbone.localStorage: Environment does not support localStorage."
   }
+  this.collection = collectionBound;
+  this.collection.sync = Backbone.localSync;
   this.name = name;
   this.serializer = serializer || {
     serialize: function(item) {
@@ -241,23 +243,23 @@ Backbone.LocalStorage.sync = window.Store.sync = Backbone.localSync = function(m
   return syncDfd && syncDfd.promise();
 };
 
-Backbone.ajaxSync = Backbone.sync;
-
-Backbone.getSyncMethod = function(model, options) {
-  var forceAjaxSync = options && options.ajaxSync;
-
-  if(!forceAjaxSync && (result(model, 'localStorage') || result(model.collection, 'localStorage'))) {
-    return Backbone.localSync;
-  }
-
-  return Backbone.ajaxSync;
-};
-
-// Override 'Backbone.sync' to default to localSync,
-// the original 'Backbone.sync' is still available in 'Backbone.ajaxSync'
-Backbone.sync = function(method, model, options) {
-  return Backbone.getSyncMethod(model, options).apply(this, [method, model, options]);
-};
+//Backbone.ajaxSync = Backbone.sync;
+//
+//Backbone.getSyncMethod = function(model, options) {
+//  var forceAjaxSync = options && options.ajaxSync;
+//
+//  if(!forceAjaxSync && (result(model, 'localStorage') || result(model.collection, 'localStorage'))) {
+//    return Backbone.localSync;
+//  }
+//
+//  return Backbone.ajaxSync;
+//};
+//
+//// Override 'Backbone.sync' to default to localSync,
+//// the original 'Backbone.sync' is still available in 'Backbone.ajaxSync'
+//Backbone.sync = function(method, model, options) {
+//  return Backbone.getSyncMethod(model, options).apply(this, [method, model, options]);
+//};
 
 return Backbone.LocalStorage;
 }));
