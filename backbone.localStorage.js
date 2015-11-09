@@ -60,7 +60,7 @@ Backbone.LocalStorage = window.Store = function(name, serializer,collectionBound
     throw "Backbone.localStorage: Environment does not support localStorage."
   }
   this.collection = collectionBound;
-  this.collection.sync = this.collecton.model.sync = Backbone.localSync;
+  this.collection.sync = this.collection.model.sync = Backbone.localSync;
   this.name = name;
   this.serializer = serializer || {
     serialize: function(item) {
