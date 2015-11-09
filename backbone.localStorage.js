@@ -60,7 +60,7 @@ Backbone.LocalStorage = window.Store = function(name, serializer,collectionBound
     throw "Backbone.localStorage: Environment does not support localStorage."
   }
   this.collection = collectionBound;
-  this.collection.sync = Backbone.localSync;
+  this.collection.sync = this.collecton.model.sync = Backbone.localSync;
   this.name = name;
   this.serializer = serializer || {
     serialize: function(item) {
@@ -177,6 +177,7 @@ extend(Backbone.LocalStorage.prototype, {
 // *localStorage* property, which should be an instance of `Store`.
 // window.Store.sync and Backbone.localSync is deprecated, use Backbone.LocalStorage.sync instead
 Backbone.LocalStorage.sync = window.Store.sync = Backbone.localSync = function(method, model, options) {
+  console.log('calling bacbone localstorage sync')
   var store = result(model, 'localStorage') || result(model.collection, 'localStorage');
 
   var resp, errorMessage;
