@@ -60,7 +60,7 @@ Backbone.LocalStorage = window.Store = function(name, serializer,collectionBound
     throw "Backbone.localStorage: Environment does not support localStorage."
   }
   this.collection = collectionBound;
-  this.collection.sync = this.collection.model.sync = Backbone.localSync;
+  this.collection.sync = Backbone.localSync;
   this.name = name;
   this.serializer = serializer || {
     serialize: function(item) {
@@ -204,7 +204,7 @@ Backbone.LocalStorage.sync = window.Store.sync = Backbone.localSync = function(m
     }
 
   } catch(error) {
-    if (error.code === 22 && store._storageSize() === 0)
+    if (error.code ===   22 && store._storageSize() === 0)
       errorMessage = "Private browsing is unsupported";
     else
       errorMessage = error.message;
